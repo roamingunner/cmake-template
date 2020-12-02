@@ -1,0 +1,9 @@
+[submodule "external/dbg-macro"]
+	path = external/dbg-macro
+	url = https://github.com/roamingunner/dbg-macro.git
+[submodule "external/autorevision"]
+	path = external/autorevision
+	url = https://github.com/roamingunner/autorevision.git
+[submodule "external/aixlog"]
+	path = external/aixlog
+	url = https://github.com/roamingunner/aixlog.git
