@@ -6,4 +6,7 @@
 	url = https://github.com/roamingunner/autorevision.git
 [submodule "external/aixlog"]
 	path = external/aixlog
-	url = https://github.com/roamingunner/aixlog.git
+	url = https://github.com/badaix/aixlog.git
+[submodule "external/dbg-marco"]
+	path = external/dbg-marco
+	url = https://github.com/roamingunner/dbg-macro.git
