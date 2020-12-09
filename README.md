@@ -36,3 +36,25 @@ doxygen will scan file in src directory defaultly. you can modify this by motify
 
 `make doc`
 
+
+### cross compile
+
+cross compile example. for detail https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
+
+```
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+set(CMAKE_SYSROOT /home/devel/rasp-pi-rootfs)
+set(CMAKE_STAGING_PREFIX /home/devel/stage)
+
+set(tools /home/devel/gcc-4.7-linaro-rpi-gnueabihf)
+set(CMAKE_C_COMPILER ${tools}/bin/arm-linux-gnueabihf-gcc)
+set(CMAKE_CXX_COMPILER ${tools}/bin/arm-linux-gnueabihf-g++)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+```
+

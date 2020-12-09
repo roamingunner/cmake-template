@@ -4,19 +4,19 @@
 
 #define VCS_TYPE		"git"
 #define VCS_BASENAME	"cmake-template"
-#define VCS_UUID		"9c46289a9be7d9b224fa65593fe960675cbd2ebe"
-#define VCS_NUM			153
-#define VCS_DATE		"2020-10-31T12:32:10Z"
-#define VCS_BRANCH		"master"
-#define VCS_TAG			"20.04"
+#define VCS_UUID		"69c80dcec686f0c6a50032f11b026cc1004acd04"
+#define VCS_NUM			5
+#define VCS_DATE		"2020-12-09T12:36:06Z"
+#define VCS_BRANCH		"main"
+#define VCS_TAG			""
 #define VCS_TAG_OPENPGP	""
-#define VCS_TICK		10
+#define VCS_TICK		5
 #define VCS_EXTRA		""
 
-#define VCS_ACTION_STAMP	"2020-10-31T12:32:10Z!103922926@qq.com"
-#define VCS_FULL_HASH		"48ce7d8dac18d2b744689ae38779937bffb05c7e"
+#define VCS_ACTION_STAMP	"2020-12-09T12:36:06Z!103922926@qq.com"
+#define VCS_FULL_HASH		"45dbd23b734777eb766a67cd4fd1794da5f3c465"
 #define VCS_COMMIT_OPENPGP	""
-#define VCS_SHORT_HASH		"48ce7d8"
+#define VCS_SHORT_HASH		"45dbd23"
 
 #define VCS_WC_MODIFIED		1
 
