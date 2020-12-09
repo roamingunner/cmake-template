@@ -7,3 +7,6 @@
 [submodule "external/aixlog"]
 	path = external/aixlog
 	url = https://github.com/badaix/aixlog.git
+[submodule "dbg-macro"]
+	path = dbg-macro
+	url = https://github.com/roamingunner/dbg-macro.git
