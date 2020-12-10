@@ -20,8 +20,6 @@ this is a c/c++ project template , it include some useful feature to make coding
 
 These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 - Address
-- Memory
-- MemoryWithOrigins
 - Undefined
 - Thread
 - Address;Undefined
