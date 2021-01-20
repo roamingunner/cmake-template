@@ -1,5 +1,16 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <getopt.h>
+
+void usage()
+{
+	printf("Usage: getopt [OPTION...] [FILENAME]...\n"
+"Your program description.\n"
+"	-?,h, --help                 Give this help list\n"
+"	-v, --version              Print program version\n"
+"	Report bugs to <youname@email.com>.\n");
+	exit(EXIT_FAILURE);
+}
 
 int main(int argc, char *argv[])
 {
@@ -37,11 +48,12 @@ int main(int argc, char *argv[])
 				break;
 
 			case 'h':
-
+				usage();
 				break;
 
 			case '?':
 				/* getopt_long will have already printed an error */
+				usage();
 				break;
 
 			default:

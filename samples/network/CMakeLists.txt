@@ -1,0 +1,6 @@
+add_executable(basic_tcp_server basic_tcp_server.c)
+add_executable(basic_udp_server basic_udp_server.c)
+add_executable(basic_unix_server basic_unix_server.c)
+add_executable(basic_tcp_client basic_tcp_client.c)
+add_executable(basic_udp_client basic_udp_client.c)
+add_executable(basic_unix_client basic_unix_client.c)

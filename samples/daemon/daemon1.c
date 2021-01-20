@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <syslog.h>
    
-static void skeleton_daemon()
+static void daemonize()
 {
     pid_t pid;
     
@@ -61,7 +61,7 @@ static void skeleton_daemon()
 
 int main()
 {
-    skeleton_daemon();
+    daemonize();
     
     while (1)
     {
