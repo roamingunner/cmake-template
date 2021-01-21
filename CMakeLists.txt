@@ -40,3 +40,6 @@ add_subdirectory(samples/sanitizer)
 add_subdirectory(samples/client)
 add_subdirectory(samples/daemon)
 add_subdirectory(samples/network)
+add_subdirectory(samples/libev-sample)
+add_subdirectory(samples/nlohmann-json-sample)
+

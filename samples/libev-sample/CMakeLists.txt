@@ -1,0 +1,6 @@
+add_executable(echo_server echo_server.cpp)
+target_link_libraries(echo_server ev)
+add_executable(official_example official_example.c)
+target_link_libraries(official_example ev)
+add_executable(timer timer.cpp)
+target_link_libraries(timer ev)
