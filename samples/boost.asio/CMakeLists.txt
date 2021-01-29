@@ -1,0 +1,10 @@
+find_package(Boost REQUIRED COMPONENTS thread)
+add_executable(tcp_async_server tcp_async_server.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/external/aixlog/include ${PROJECT_SOURCE_DIR})
+ADD_DEPENDENCIES(tcp_async_server autorevision)
+target_link_libraries(tcp_async_server Boost::thread)
+
+add_executable(tcp_sync_client tcp_sync_client.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/external/aixlog/include ${PROJECT_SOURCE_DIR})
+ADD_DEPENDENCIES(tcp_sync_client autorevision)
+target_link_libraries(tcp_sync_client Boost::thread)

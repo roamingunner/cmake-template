@@ -21,6 +21,9 @@ project(exmample)
 # Set the searching location for cmake 'include' locations
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
 
+set(CMAKE_C_FLAGS "-O2")
+set(CMAKE_CXX_FLAGS "-O2")
+
 include(c++-standards)
 include(code-coverage)
 include(formatting)
@@ -34,6 +37,10 @@ cxx_11()
 
 build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
 
+add_custom_target(autorevision 
+    COMMAND ${PROJECT_SOURCE_DIR}/external/autorevision/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
+)
+
 add_subdirectory(samples/cmake-sample)
 add_subdirectory(samples/aixlog-sample)
 add_subdirectory(samples/sanitizer)
@@ -42,4 +49,4 @@ add_subdirectory(samples/daemon)
 add_subdirectory(samples/network)
 add_subdirectory(samples/libev-sample)
 add_subdirectory(samples/nlohmann-json-sample)
-
+add_subdirectory(samples/boost.asio)
