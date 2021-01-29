@@ -23,6 +23,18 @@ static struct argp_option options[] = {
   { 0 }
 };
 
+/* struct argp_option定义
+struct argp_option
+{
+  const char *name; option名称，用作long_option
+  int key;  option的key，用作short_option
+  const char *arg; 如果该option需要跟参数，那么可通过arg字段给参数定一个名称。可以在usage显示出来，同时在parser里才能通过arg拿到option参数
+  int flags; 一般不写
+  const char *doc; 参数说明
+  int group; 参数分组，一般不写
+};
+*/
+
 /* Used by main to communicate with parse_opt. */
 struct arguments
 {
@@ -51,6 +63,9 @@ parse_opt (int key, char *arg, struct argp_state *state)
       arguments->output_file = arg;
       break;
 
+    //ARGP定义了一些特殊的key
+    //ARGP_KEY_ARG用于接收没有option的参数
+    //ARGP_KEY_END在参数粘贴完成后会调用
     case ARGP_KEY_ARG:
       if (state->arg_num >= 2)
         /* Too many arguments. */

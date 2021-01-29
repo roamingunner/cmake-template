@@ -1,5 +1,5 @@
-add_executable(create_json_obj create_json_obj.cpp)
-target_include_directories(create_json_obj PRIVATE ${PROJECT_SOURCE_DIR}/external/nlohmann)
+add_executable(nlohmann_json_sample nlohmann_json_sample.cpp)
+target_include_directories(nlohmann_json_sample PRIVATE ${PROJECT_SOURCE_DIR}/external/nlohmann)
 
 
 

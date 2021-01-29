@@ -56,3 +56,15 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 ```
 
+### 减缓header only library代码膨胀问题
+
+根据实验，gcc优化选项O2 Os对header only library代码膨胀问题有较好的抑制能力
+
+|GCC优化选项|实例代码|header only library|二进制大小|strip后二进制大小|
+| ---- | ---- | ---- | ---- | ---- |
+| 无 | geet-cli11 | CLI11 | 826KB | 435KB |
+| O2 | geet-cli11 | CLI11 | 308KB | 235KB |
+| Os | geet-cli11 | CLI11 | 253KB | 167KB |
+| 无 | nlohmann-json-sample | nlohmann-json | 704KB | 295KB |
+| O2 | nlohmann-json-sample | nlohmann-json | 161KB | 119KB |
+| Os | nlohmann-json-sample | nlohmann-json | 156KB | 95KB |
