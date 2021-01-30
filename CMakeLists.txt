@@ -41,12 +41,12 @@ add_custom_target(autorevision
     COMMAND ${PROJECT_SOURCE_DIR}/external/autorevision/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
 )
 
-add_subdirectory(samples/cmake-sample)
-add_subdirectory(samples/aixlog-sample)
+add_subdirectory(samples/cmake)
+add_subdirectory(samples/aixlog)
 add_subdirectory(samples/sanitizer)
 add_subdirectory(samples/client)
 add_subdirectory(samples/daemon)
 add_subdirectory(samples/network)
-add_subdirectory(samples/libev-sample)
-add_subdirectory(samples/nlohmann-json-sample)
+add_subdirectory(samples/libev)
+add_subdirectory(samples/nlohmann-json)
 add_subdirectory(samples/boost.asio)
