@@ -1,4 +1,4 @@
-include_directories(${PROJECT_SOURCE_DIR}/samples/cmake-sample/include ${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/samples/cmake/include ${PROJECT_SOURCE_DIR})
 
 add_library(foo STATIC foo/foo.c)
 add_library(bar SHARED bar/bar.c)
