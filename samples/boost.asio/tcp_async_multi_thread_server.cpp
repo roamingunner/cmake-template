@@ -329,16 +329,13 @@ int main(int argc, char *argv[]) {
         
         server s(io_context, args.port);
 
-        if (args.threads_num > 1){
-            std::vector<std::thread> threads;
-            for (int i = 0; i < args.threads_num ; i++){
-                threads.emplace_back([&io_context](){io_context.run();});
-            }
-            for (auto& t : threads){
-                t.join();
-            }
-        }else{
-            io_context.run();
+
+        std::vector<std::thread> threads;
+        for (int i = 0; i < args.threads_num ; i++){
+            threads.emplace_back([&io_context](){io_context.run();});
+        }
+        for (auto& t : threads){
+            t.join();
         }
 
     } catch (std::exception &e) {
