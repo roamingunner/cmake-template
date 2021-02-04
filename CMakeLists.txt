@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10.0)
 #详细样例参考 https://github.com/kigster/cmake-project-template  https://github.com/district10/cmake-templates/tree/master/modules 工程
-project(exmample)
+project(example)
 
 #cross compile example. for detail https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
 # set(CMAKE_SYSTEM_NAME Linux)
@@ -35,7 +35,9 @@ include(doxygen)
 # Require C++11
 cxx_11()
 
-build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
+# enable build doc
+#set(BUILD_DOCUMENTATION ON)
+#build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
 
 add_custom_target(autorevision 
     COMMAND ${PROJECT_SOURCE_DIR}/external/autorevision/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
