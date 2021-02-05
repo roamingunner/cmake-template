@@ -36,8 +36,7 @@ include(doxygen)
 cxx_11()
 
 # enable build doc
-#set(BUILD_DOCUMENTATION ON)
-#build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
+build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
 
 add_custom_target(autorevision 
     COMMAND ${PROJECT_SOURCE_DIR}/external/autorevision/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
@@ -54,3 +53,4 @@ add_subdirectory(samples/nlohmann-json)
 add_subdirectory(samples/boost.asio)
 add_subdirectory(samples/boost.thread)
 add_subdirectory(samples/check_cpp)
+add_subdirectory(samples/coverage)

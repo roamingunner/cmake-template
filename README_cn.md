@@ -26,11 +26,7 @@ project template是一个c/c++软件开发工程模板，为c/c++软件包开发
 ## 通过doxygen生成接口文档
 
 * 系统中安装doxygen
-* 在顶层CmakeList.txt中放开
-```
-set(BUILD_DOCUMENTATION ON)
-build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in
-```
+* 使能BUILD_DOCUMENTATION。cmake -DBUILD_DOCUMENTATION=ON
 * make doc
 
 TIP:
@@ -63,6 +59,14 @@ These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 - Leak
 
 `cmake -D USE_SANITIZER=Address ..`
+
+## 使用Coverage计算代码覆盖率
+
+* 系统中安装ccov命令
+* 添加需要计算Coverage的target，参考samples/coverage
+* 在cmake配置时使能CODE_COVERAGE `cmake -DCODE_COVERAGE=ON ..`
+* make ccov
+* 结果生成在ccov目录
 
 ## 如何交叉编译
 
