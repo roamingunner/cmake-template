@@ -1,0 +1,1 @@
+add_executable(check_cpp_version check_cpp_version.cpp)

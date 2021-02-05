@@ -38,6 +38,7 @@ endmacro()
 macro(cppcheck)
   if(CPPCHECK AND CPPCHECK_EXE)
     set(CMAKE_CXX_CPPCHECK ${CPPCHECK_EXE} ${ARGN})
+    set(CMAKE_C_CPPCHECK ${CPPCHECK_EXE} ${ARGN})
   endif()
 endmacro()
 
@@ -90,14 +91,20 @@ find_program(CPPCHECK_EXE NAMES "cppcheck")
 mark_as_advanced(FORCE CPPCHECK_EXE)
 if(CPPCHECK_EXE)
   message(STATUS "cppcheck found: ${CPPCHECK_EXE}")
-  if(CPPECHECK)
+  if(CPPCHECK)
     set(CMAKE_CXX_CPPCHECK
-        "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
+        "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[CPPCHECK][{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
+    )
+    set(CMAKE_C_CPPCHECK
+        "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[CPPCHECK][{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
     )
   endif()
   if(NOT CPPCHECK)
     message(STATUS "cppcheck NOT ENABLED via 'CPPCHECK' variable!")
     set(CMAKE_CXX_CPPCHECK
+        ""
+        CACHE STRING "" FORCE) # delete it
+    set(CMAKE_C_CPPCHECK
         ""
         CACHE STRING "" FORCE) # delete it
   endif()
@@ -106,9 +113,15 @@ elseif(CPPCHECK)
   set(CMAKE_CXX_CPPCHECK
       ""
       CACHE STRING "" FORCE) # delete it
+  set(CMAKE_C_CPPCHECK
+      ""
+      CACHE STRING "" FORCE) # delete it
 else()
   message(STATUS "cppcheck not found!")
   set(CMAKE_CXX_CPPCHECK
+      ""
+      CACHE STRING "" FORCE) # delete it
+  set(CMAKE_C_CPPCHECK
       ""
       CACHE STRING "" FORCE) # delete it
 endif()

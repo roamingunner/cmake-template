@@ -1,0 +1,6 @@
+add_executable(cppcheck_memleak cppcheck_memleak.c)
+add_executable(cppcheck_member_invalid cppcheck_member_invalid.cpp)
+add_executable(cppcheck_outofbound cppcheck_outofbound.c)
+add_executable(cppcheck_resource_leak cppcheck_resource_leak.c)
+
+
