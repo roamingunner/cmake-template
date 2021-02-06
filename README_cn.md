@@ -55,7 +55,6 @@ These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 - Undefined
 - Thread
 - Address;Undefined
-- Undefined;Address
 - Leak
 
 `cmake -D USE_SANITIZER=Address ..`
@@ -67,6 +66,13 @@ These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 * 在cmake配置时使能CODE_COVERAGE `cmake -DCODE_COVERAGE=ON ..`
 * make ccov
 * 结果生成在ccov目录
+
+
+## 使用cppcheck静态分析
+
+* 系统中安装cppcheck命令
+* 在cmake配置时使能CPPCHECK `cmake -DCPPCHECK=ON ..`
+* make
 
 ## 如何交叉编译
 
