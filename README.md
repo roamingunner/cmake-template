@@ -1,21 +1,24 @@
-# cmake template <!-- omit in toc -->
-
-this is a c/c++ project template , it include some useful feature to make coding  more stable and efficient
-
- * include [cmake-scripts](https://github.com/StableCoder/cmake-scripts) helping you sanitize(thread/address/memory/...) project
- * add Doxygen file. helo you build source docs
- * add autorevision project to make version stamp
- * add dbg-macro
-
+# c/c++ project template <!-- omit in toc -->
 ## instruction
+this is a c/c++ project template , it include some useful feature to make coding more stable and efficient.
+* include cmake template
+  * include [cmake-scripts](https://github.com/StableCoder/cmake-scripts) helping you sanitize(thread/address/memory/...) project
+  * add Doxygen file. helo you build source docs
+  * add autorevision project to make version stamp
+* collect some useful header-only libraries
+  * aixlog
+  * CLI11
+  * dbg-marco
+  * nlohmann-json
+* sample code
 
-### basic 
+## cmake template
 
-- git clone --recurse-submodules https://github.com/roamingunner/cmake-template.git
-- mkdir build && cd build
-- cmake ..
-- make # build example
+### cmake basic sample
 
+please reference samples/cmake, more detail 
+* https://github.com/kigster/cmake-project-template 
+* https://github.com/district10/cmake-templates/tree/master/modules
 ### build with sanitizer
 
 These are used by declaring the `USE_SANITIZER` CMake variable as one of:
@@ -55,16 +58,3 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 ```
-
-### 减缓header only library代码膨胀问题
-
-根据实验，gcc优化选项O2 Os对header only library代码膨胀问题有较好的抑制能力
-
-|GCC优化选项|实例代码|header only library|二进制大小|strip后二进制大小|
-| ---- | ---- | ---- | ---- | ---- |
-| 无 | geet-cli11 | CLI11 | 826KB | 435KB |
-| O2 | geet-cli11 | CLI11 | 308KB | 235KB |
-| Os | geet-cli11 | CLI11 | 253KB | 167KB |
-| 无 | nlohmann-json-sample | nlohmann-json | 704KB | 295KB |
-| O2 | nlohmann-json-sample | nlohmann-json | 161KB | 119KB |
-| Os | nlohmann-json-sample | nlohmann-json | 156KB | 95KB |

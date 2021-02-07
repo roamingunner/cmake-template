@@ -1,13 +1,12 @@
-# project template
+# c/c++ project template
 
-## 说明
+## 介绍
 
-project template是一个c/c++软件开发工程模板，为c/c++软件包开发提供了如下方便的特性来
-
-* 提供CMakeList.txt撰写模板
-* 添加StableCoder module，简化gcc sanitizer，code coverage的使用
-* 添加Doxygen module，支持doxygen开发文档生成
-* 添加autorevision版本戳，支持git svn版本管理
+c/c++ project template是一个c/c++软件开发工程模板,包含如下内容
+* cmake构建模板
+  * 添加StableCoder module，简化gcc sanitizer，code coverage的使用
+  * 添加Doxygen module，支持doxygen开发文档生成
+  * 添加autorevision版本戳，支持git svn版本管理
 * 包含一些实用的header-only库
   * aixlog
   * CLI11
@@ -15,15 +14,16 @@ project template是一个c/c++软件开发工程模板，为c/c++软件包开发
   * nlohmann-json
 * 包含代码开发样例
 
-## 使用cmake管理工程
+## cmake构建模板
 
+### 如何使用cmake构建功能
 编译二进制、动态库、静态库样例请参考samples/cmake
 
 详细cmake教程参考
 * https://github.com/kigster/cmake-project-template 
 * https://github.com/district10/cmake-templates/tree/master/modules
 
-## 通过doxygen生成接口文档
+### 通过doxygen生成接口文档
 
 * 系统中安装doxygen
 * 使能BUILD_DOCUMENTATION。cmake -DBUILD_DOCUMENTATION=ON
@@ -34,7 +34,7 @@ TIP:
  - 修改该文档，README_cn.md 则修改文档首页说明
 
 
-## 使用autorevision添加版本时间戳
+### 使用autorevision添加版本时间戳
 
 顶层CMakefile.txt已经定了autorevision target，工程会自动申城revision.h版本头文件
 ```
@@ -48,7 +48,7 @@ add_custom_target(autorevision
 ADD_DEPENDENCIES(cmake-sample autorevision)
 ```
 
-## 如何使用gcc sanitizer检查代码问题
+### 如何使用gcc sanitizer检查代码问题
 
 These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 - Address
@@ -59,7 +59,7 @@ These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 
 `cmake -D USE_SANITIZER=Address ..`
 
-## 使用Coverage计算代码覆盖率
+### 使用Coverage计算代码覆盖率
 
 * 系统中安装ccov命令
 * 添加需要计算Coverage的target，参考samples/coverage
@@ -68,13 +68,13 @@ These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 * 结果生成在ccov目录
 
 
-## 使用cppcheck静态分析
+### 使用cppcheck静态分析
 
 * 系统中安装cppcheck命令
 * 在cmake配置时使能CPPCHECK `cmake -DCPPCHECK=ON ..`
 * make
 
-## 如何交叉编译
+### 如何交叉编译
 
 cmake交叉编译的详细设定参考https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
 
@@ -92,4 +92,6 @@ set(CMAKE_CXX_COMPILER ${tools}/bin/arm-linux-gnueabihf-g++)
 ```
 
 ## 代码开发样例
+
+参考samples目录
 
