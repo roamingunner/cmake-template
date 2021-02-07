@@ -10,3 +10,6 @@
 [submodule "dbg-macro"]
 	path = dbg-macro
 	url = https://github.com/roamingunner/dbg-macro.git
+[submodule "samples/Programming-POSIX-Threads"]
+	path = samples/Programming-POSIX-Threads
+	url = https://github.com/hailinzeng/Programming-POSIX-Threads.git
