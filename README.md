@@ -12,6 +12,13 @@ this is a c/c++ project template , it include some useful feature to make coding
   * nlohmann-json
 * sample code
 
+### usage 
+
+- git clone --recurse-submodules https://github.com/roamingunner/c-cpp-project-template.git	 
+- mkdir build && cd build
+- cmake ..	
+- make # build example
+
 ## cmake template
 
 ### cmake basic sample
