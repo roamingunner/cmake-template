@@ -40,6 +40,7 @@ build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
 
 add_custom_target(autorevision 
     COMMAND ${PROJECT_SOURCE_DIR}/external/autorevision/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 add_subdirectory(samples/cmake)
@@ -50,9 +51,13 @@ add_subdirectory(samples/daemon)
 add_subdirectory(samples/network)
 add_subdirectory(samples/libev)
 add_subdirectory(samples/nlohmann-json)
-add_subdirectory(samples/boost.asio)
-add_subdirectory(samples/boost.thread)
 add_subdirectory(samples/check_cpp_version)
 add_subdirectory(samples/coverage)
 add_subdirectory(samples/cppcheck)
 add_subdirectory(samples/filesystem)
+
+find_package(Boost)
+if(Boost_FOUND)
+add_subdirectory(samples/boost.asio)
+add_subdirectory(samples/boost.thread)
+endif(Boost_FOUND)
