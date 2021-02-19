@@ -92,12 +92,9 @@ mark_as_advanced(FORCE CPPCHECK_EXE)
 if(CPPCHECK_EXE)
   message(STATUS "cppcheck found: ${CPPCHECK_EXE}")
   if(CPPCHECK)
-    set(CMAKE_CXX_CPPCHECK
-        "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[CPPCHECK][{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
-    )
-    set(CMAKE_C_CPPCHECK
-        "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[CPPCHECK][{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
-    )
+    set(CPPCHECK_FLAGS "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[CPPCHECK][{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force;--xml;--output-file=${PROJECT_SOURCE_DIR}/cppcheck-report.xml")
+    set(CMAKE_CXX_CPPCHECK "${CPPCHECK_FLAGS}")
+    set(CMAKE_C_CPPCHECK "${CPPCHECK_FLAGS}")
   endif()
   if(NOT CPPCHECK)
     message(STATUS "cppcheck NOT ENABLED via 'CPPCHECK' variable!")
