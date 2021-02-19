@@ -50,6 +50,23 @@ if(NOT TARGET all_cppcheck)
   add_custom_target(all_cppcheck)
 endif()
 
+if(NOT TARGET all_cppcheck_report)
+  file(MAKE_DIRECTORY ${CMAKE_CACHEFILE_DIR}/cppcheck_report)
+  set(_cppcheck_xml_dir "${CMAKE_CACHEFILE_DIR}/cppcheck_report/xml")
+  set(_cppcheck_html_dir "${CMAKE_CACHEFILE_DIR}/cppcheck_report/html")
+  file(MAKE_DIRECTORY ${_cppcheck_xml_dir})
+  file(MAKE_DIRECTORY ${_cppcheck_html_dir})
+  add_custom_target(all_cppcheck_report
+  COMMAND
+  ./cppcheck-htmlreport
+  `find ${_cppcheck_xml_dir} -name "*.cppcheck*.xml" | sed 's/^/--file /g' | xargs`
+   --title=${PROJECT_NAME}_CPPCHECK_REPORT
+   --report-dir=${_cppcheck_html_dir}
+   WORKING_DIRECTORY
+   ${PROJECT_SOURCE_DIR}/cmake-module
+  )
+endif()
+
 function(add_cppcheck_sources _targetname)
 	if(CPPCHECK_FOUND)
 		set(_cppcheck_args -I ${CMAKE_SOURCE_DIR} ${CPPCHECK_EXTRA_ARGS})
@@ -145,6 +162,22 @@ function(add_cppcheck_sources _targetname)
 			"${_targetname}_cppcheck: Running cppcheck on target ${_targetname}..."
 			VERBATIM)
 		add_dependencies(all_cppcheck ${_targetname}_cppcheck)
+
+		add_custom_target(${_targetname}_cppcheck_xml
+			COMMAND
+			${CPPCHECK_EXECUTABLE}
+			${CPPCHECK_QUIET_ARG}
+			${CPPCHECK_TEMPLATE_ARG}
+			${_cppcheck_args}
+			"--xml"
+			${_files}
+			2> ${_cppcheck_xml_dir}/.cppcheck_${_targetname}.xml
+			WORKING_DIRECTORY
+			"${CMAKE_CURRENT_SOURCE_DIR}"
+			COMMENT
+			"${_targetname}_cppcheck_xml: Generate cppcheck report on target ${_targetname}..."
+			VERBATIM)
+		add_dependencies(all_cppcheck_report ${_targetname}_cppcheck_xml)
 	endif()
 endfunction()
 
@@ -237,6 +270,24 @@ function(add_cppcheck _name)
 			"${_name}_cppcheck: Running cppcheck on target ${_name}..."
 			VERBATIM)
 		add_dependencies(all_cppcheck ${_name}_cppcheck)
+
+		add_custom_target(${_name}_cppcheck_xml
+			COMMAND
+			${CPPCHECK_EXECUTABLE}
+			${CPPCHECK_QUIET_ARG}
+			${CPPCHECK_TEMPLATE_ARG}
+			${_cppcheck_args}
+			${_includes}
+			"--xml"
+			${_files}
+			2> ${_cppcheck_xml_dir}/.cppcheck_${_name}.xml
+			WORKING_DIRECTORY
+			"${CMAKE_CURRENT_SOURCE_DIR}"
+			COMMENT
+			"${_name}_cppcheck: Generate cppcheck report on target ${_name}..."
+			VERBATIM)
+
+		add_dependencies(all_cppcheck_report ${_name}_cppcheck_xml)
 	endif()
 
 endfunction()
