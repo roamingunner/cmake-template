@@ -68,11 +68,19 @@ These are used by declaring the `USE_SANITIZER` CMake variable as one of:
 * 结果生成在ccov目录
 
 
-### 使用cppcheck静态分析
+### 使用cppcheck静态分析与分析报告
 
-* 系统中安装cppcheck命令
-* 在cmake配置时使能CPPCHECK `cmake -DCPPCHECK=ON ..`
-* make
+采用并修改CppcheckTargets模块，通过add_cppcheck以及add_cppcheck_sources函数可以自定义需要进行静态分析的代码
+```
+#  add_cppcheck(<target-name> [UNUSED_FUNCTIONS] [STYLE] [POSSIBLE_ERROR] [FORCE] [FAIL_ON_WARNINGS]) -
+#    Create a target to check a target's sources with cppcheck and the indicated options
+#  add_cppcheck_sources(<target-name> [UNUSED_FUNCTIONS] [STYLE] [POSSIBLE_ERROR] [FORCE] [FAIL_ON_WARNINGS] <sources list>) -
+#    Create a target to check standalone sources with cppcheck and the indicated options
+```
+add_cppcheck函数用于分析target相关的代码，add_cppcheck_sources函数可以创建一个target来分析自定义的代码，具体请参考samples的cppcheck样例。
+
+* make all_cppcheck #分析所有add_cppcheck以及add_cppcheck_sources指定的所有代码
+* make all_cppcheck_report #生成cppcheck分析报告，报告存放在cppcheck_report目录
 
 ### 如何交叉编译
 
