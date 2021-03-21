@@ -13,3 +13,6 @@
 [submodule "samples/Programming-POSIX-Threads"]
 	path = samples/Programming-POSIX-Threads
 	url = https://github.com/hailinzeng/Programming-POSIX-Threads.git
+[submodule "external/hexdump"]
+	path = external/hexdump
+	url = https://github.com/roamingunner/hexdump.git
