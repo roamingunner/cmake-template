@@ -51,9 +51,9 @@ if(NOT TARGET all_cppcheck)
 endif()
 
 if(NOT TARGET all_cppcheck_report)
-  file(MAKE_DIRECTORY ${CMAKE_CACHEFILE_DIR}/cppcheck_report)
-  set(_cppcheck_xml_dir "${CMAKE_CACHEFILE_DIR}/cppcheck_report/xml")
-  set(_cppcheck_html_dir "${CMAKE_CACHEFILE_DIR}/cppcheck_report/html")
+  file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/cppcheck_report)
+  set(_cppcheck_xml_dir "${PROJECT_SOURCE_DIR}/cppcheck_report/xml")
+  set(_cppcheck_html_dir "${PROJECT_SOURCE_DIR}/cppcheck_report/html")
   file(MAKE_DIRECTORY ${_cppcheck_xml_dir})
   file(MAKE_DIRECTORY ${_cppcheck_html_dir})
   add_custom_target(all_cppcheck_report

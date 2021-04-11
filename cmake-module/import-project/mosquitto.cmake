@@ -1,0 +1,21 @@
+message("External project: mosquitto")
+ExternalProject_Add(mosquitto
+  GIT_REPOSITORY https://github.com/eclipse/mosquitto.git
+  GIT_TAG "v2.0.10"
+  CMAKE_ARGS += -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
+    -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} 
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} 
+    -DWITH_STATIC_LIBRARIES=OFF
+    -DWITH_PIC=ON
+    -DWITH_THREADING=ON
+    -DWITH_TLS=OFF
+    -DWITH_CJSON=ON
+    -DDOCUMENTATION=OFF
+    -DWITH_PLUGINS=OFF
+    -DWITH_WRAP=OFF
+    -DSTRIP=true
+    -DUNAME=Linux
+    -DWITH_WEBSOCKETS=OFF
+    -DWITH_SRV=OFF
+  DEPENDS cJSON
+)

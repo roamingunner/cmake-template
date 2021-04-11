@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.10.0)
 #详细样例参考 https://github.com/kigster/cmake-project-template  https://github.com/district10/cmake-templates/tree/master/modules 工程
-project(example)
+#头文件引用方法参考 https://zhuanlan.zhihu.com/p/82244559
+
+project(c-cpp-project-template)
+
+# Set the searching location for cmake 'include' locations
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
+
+set(CMAKE_C_FLAGS "-O2")
+set(CMAKE_CXX_FLAGS "-O2")
+
+# set cross compile 
 
 #cross compile example. for detail https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
 # set(CMAKE_SYSTEM_NAME Linux)
@@ -9,20 +19,29 @@ project(example)
 #set(CMAKE_SYSROOT /home/devel/rasp-pi-rootfs)
 #set(CMAKE_STAGING_PREFIX /home/devel/stage)
 
-#set(toolchains_path /home/leo/local/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf)
-#set(CMAKE_C_COMPILER ${toolchains_path}/bin/arm-linux-gnueabihf-gcc)
-#set(CMAKE_CXX_COMPILER ${toolchains_path}/bin/arm-linux-gnueabihf-g++)
+# set(toolchains_path /home/leo/local/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf)
+# set(CMAKE_C_COMPILER ${toolchains_path}/bin/arm-linux-gnueabihf-gcc)
+# set(CMAKE_CXX_COMPILER ${toolchains_path}/bin/arm-linux-gnueabihf-g++)
 
 # set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 # set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 # set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 # set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-# Set the searching location for cmake 'include' locations
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
+######### import external projects
+include(ExternalProject)
+set_property(DIRECTORY PROPERTY EP_PREFIX ${PROJECT_SOURCE_DIR}/depends)
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/depends/lib/cmake;${CMAKE_MODULE_PATH}")
+link_directories(${PROJECT_SOURCE_DIR}/depends/lib)
+include_directories(${PROJECT_SOURCE_DIR}/depends/include)
+include(cmake-module/import-project/cJSON.cmake)
+include(cmake-module/import-project/jsoncpp.cmake)
+include(cmake-module/import-project/mosquitto.cmake)
+include(cmake-module/import-project/libev.cmake)
+include(cmake-module/import-project/gtest.cmake)
 
-set(CMAKE_C_FLAGS "-O2")
-set(CMAKE_CXX_FLAGS "-O2")
+###############################################
+
 
 include(c++-standards)
 include(code-coverage)
@@ -33,16 +52,20 @@ include(doxygen)
 include(Findcppcheck)
 include(CppcheckTargets)
 
+
+
 # Require C++11
 cxx_11()
 
 # enable build doc
 build_docs(PROCESS_DOXYFILE TARGET_NAME doc DOXYFILE_PATH Doxyfile.in)
 
+# generate revision.h and include 
 add_custom_target(autorevision 
-    COMMAND ${PROJECT_SOURCE_DIR}/external/autorevision/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
+    COMMAND ${PROJECT_SOURCE_DIR}/utils/script/autorevision.sh -t h > ${PROJECT_SOURCE_DIR}/revision.h
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
+include_directories(${PROJECT_SOURCE_DIR})
 
 add_subdirectory(samples/cmake)
 add_subdirectory(samples/aixlog)
@@ -52,6 +75,7 @@ add_subdirectory(samples/daemon)
 add_subdirectory(samples/network)
 add_subdirectory(samples/libev)
 add_subdirectory(samples/nlohmann-json)
+add_subdirectory(samples/jsoncpp)
 add_subdirectory(samples/check_cpp_version)
 add_subdirectory(samples/coverage)
 add_subdirectory(samples/cppcheck)
