@@ -6,27 +6,21 @@ project(c-cpp-project-template)
 
 # Set the searching location for cmake 'include' locations
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
+include(c++-standards)
+include(code-coverage)
+include(formatting)
+include(sanitizers)
+include(dependency-graph)
+include(doxygen)
+include(Findcppcheck)
+include(CppcheckTargets)
 
+######### set cross compile toolchains
+#include(cmake-module/toolchains/toolchain_sample.cmake)
+
+######### set cflags/cxxflags
 set(CMAKE_C_FLAGS "-O2")
 set(CMAKE_CXX_FLAGS "-O2")
-
-# set cross compile 
-
-#cross compile example. for detail https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
-# set(CMAKE_SYSTEM_NAME Linux)
-# set(CMAKE_SYSTEM_PROCESSOR arm)
-
-#set(CMAKE_SYSROOT /home/devel/rasp-pi-rootfs)
-#set(CMAKE_STAGING_PREFIX /home/devel/stage)
-
-# set(toolchains_path /home/leo/local/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf)
-# set(CMAKE_C_COMPILER ${toolchains_path}/bin/arm-linux-gnueabihf-gcc)
-# set(CMAKE_CXX_COMPILER ${toolchains_path}/bin/arm-linux-gnueabihf-g++)
-
-# set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-# set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-# set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
-# set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 ######### import external projects
 include(ExternalProject)
@@ -41,18 +35,6 @@ include(cmake-module/import-project/libev.cmake)
 include(cmake-module/import-project/gtest.cmake)
 
 ###############################################
-
-
-include(c++-standards)
-include(code-coverage)
-include(formatting)
-include(sanitizers)
-include(dependency-graph)
-include(doxygen)
-include(Findcppcheck)
-include(CppcheckTargets)
-
-
 
 # Require C++11
 cxx_11()
