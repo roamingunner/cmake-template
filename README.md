@@ -14,7 +14,7 @@ this is a c/c++ project template , it include some useful feature to make coding
 
 ### usage 
 
-- git clone --recurse-submodules https://github.com/roamingunner/c-cpp-project-template.git	 
+- git clone --recurse-submodules https://github.com/roamingunner/cmake-template.git	 
 - mkdir build && cd build
 - cmake ..	
 - make # build example
