@@ -8,6 +8,7 @@ endif()
 ExternalProject_Add(jsoncpp
     URL https://github.com/open-source-parsers/jsoncpp/archive/1.7.7.tar.gz
     URL_HASH SHA256=087640ebcf7fbcfe8e2717a0b9528fff89c52fcf69fa2a18cc2b538008098f97
+    BUILD_IN_SOURCE 1
     CMAKE_ARGS += -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> 
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} 
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} 
