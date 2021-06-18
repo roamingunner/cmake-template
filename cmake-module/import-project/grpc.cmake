@@ -22,5 +22,5 @@ ExternalProject_Add(grpc
             -DCMAKE_CXX_FLAGS=-I<INSTALL_DIR>/include
             -DCMAKE_CXX_IMPLICIT_LINK_DIRECTORIES=-I<INSTALL_DIR>/lib
             -DCMAKE_C_IMPLICIT_LINK_DIRECTORIES=-I<INSTALL_DIR>/lib
-    DEPENDS cares host-protobuf protobuf re2 zlib abseil
+    DEPENDS host-grpc cares protobuf re2 zlib abseil
 )

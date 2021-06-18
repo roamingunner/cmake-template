@@ -8,4 +8,5 @@ ExternalProject_Add(host-protobuf
     -DCMAKE_BUILD_TYPE:STRING=release
     -Dprotobuf_BUILD_TESTS=OFF
     -Dprotobuf_WITH_ZLIB:BOOL=OFF
+    -DBUILD_SHARED_LIBS=ON 
 )

@@ -1,7 +1,7 @@
-message("External project: grpc")
+message("External project: host-grpc")
 # reference https://stackoverflow.com/questions/52202453/cross-compiling-grpc-using-cmake
 
-ExternalProject_Add(grpc
+ExternalProject_Add(host-grpc
     URL https://github.com/grpc/grpc/archive/refs/tags/v1.38.0.tar.gz
     CMAKE_ARGS +=
             -DgRPC_INSTALL:BOOL=ON
@@ -15,12 +15,11 @@ ExternalProject_Add(grpc
             -DgRPC_RE2_PROVIDER=package
             -DgRPC_SSL_PROVIDER=package
             -DgRPC_ZLIB_PROVIDER=package
-            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
-            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} 
-            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-            -DCMAKE_C_FLAGS=-I<INSTALL_DIR>/include
-            -DCMAKE_CXX_FLAGS=-I<INSTALL_DIR>/include
-            -DCMAKE_CXX_IMPLICIT_LINK_DIRECTORIES=-I<INSTALL_DIR>/lib
-            -DCMAKE_C_IMPLICIT_LINK_DIRECTORIES=-I<INSTALL_DIR>/lib
-    DEPENDS cares host-protobuf protobuf re2 zlib abseil
+            -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>/host
+            -DCMAKE_PREFIX_PATH=<INSTALL_DIR>/host/lib/cmake
+            -DCMAKE_C_FLAGS=-I<INSTALL_DIR>/host/include
+            -DCMAKE_CXX_FLAGS=-I<INSTALL_DIR>/host/include
+            -DCMAKE_CXX_IMPLICIT_LINK_DIRECTORIES=-I<INSTALL_DIR>/host/lib
+            -DCMAKE_C_IMPLICIT_LINK_DIRECTORIES=-I<INSTALL_DIR>/host/lib
+    DEPENDS host-cares host-protobuf host-re2 host-zlib host-abseil
 )
