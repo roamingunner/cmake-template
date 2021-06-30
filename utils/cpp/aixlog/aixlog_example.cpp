@@ -92,4 +92,3 @@ int main(int /*argc*/, char** /*argv*/)
     AixLog::Severity severity(AixLog::Severity::debug);
     LOG(severity) << "LOG(severity) << severity\n";
 }
-

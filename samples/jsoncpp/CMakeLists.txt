@@ -1,0 +1,2 @@
+add_executable(jsoncpp_sample jsoncpp_sample.cpp)
+target_link_libraries(jsoncpp_sample -ljsoncpp)

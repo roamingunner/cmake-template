@@ -1,4 +1,4 @@
-include_directories(${PROJECT_SOURCE_DIR}/external/)
+include_directories(${PROJECT_SOURCE_DIR}/utils/cpp)
 
 # Some one-offs first:
 # 1) Tests and main in one file
