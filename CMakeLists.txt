@@ -22,31 +22,6 @@ include(CppcheckTargets)
 set(CMAKE_C_FLAGS "-O2")
 set(CMAKE_CXX_FLAGS "-O2")
 
-######### import external projects
-include(ExternalProject)
-set_property(DIRECTORY PROPERTY EP_PREFIX ${PROJECT_SOURCE_DIR}/depends)
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/depends/lib/cmake;${CMAKE_MODULE_PATH}")
-set(CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/depends/lib/cmake")
-set(CMAKE_PROGRAM_PATH "${PROJECT_SOURCE_DIR}/depends/host/bin")
-
-link_directories(${PROJECT_SOURCE_DIR}/depends/lib)
-include_directories(${PROJECT_SOURCE_DIR}/depends/include)
-include(cmake-module/import-project/host-abseil.cmake)
-include(cmake-module/import-project/host-cares.cmake)
-include(cmake-module/import-project/host-re2.cmake)
-include(cmake-module/import-project/host-zlib.cmake)
-include(cmake-module/import-project/host-protobuf.cmake)
-include(cmake-module/import-project/host-grpc.cmake)
-include(cmake-module/import-project/abseil.cmake)
-include(cmake-module/import-project/cares.cmake)
-include(cmake-module/import-project/re2.cmake)
-include(cmake-module/import-project/zlib.cmake)
-include(cmake-module/import-project/protobuf.cmake)
-#include(cmake-module/import-project/openssl.cmake)
-include(cmake-module/import-project/grpc.cmake)
-
-###############################################
-
 # Require C++11
 cxx_11()
 
