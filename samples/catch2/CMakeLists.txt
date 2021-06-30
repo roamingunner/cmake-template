@@ -1,16 +1,17 @@
-include_directories(${PROJECT_SOURCE_DIR}/utils/cpp)
-
+find_path(CATCH2_INCLUDE_DIRS "catch.hpp")
 # Some one-offs first:
 # 1) Tests and main in one file
 add_executable( 010-TestCase
   010-TestCase.cpp
 )
+target_include_directories(010-TestCase PRIVATE ${CATCH2_INCLUDE_DIRS})
 
 # 2) Tests and main across two files
 add_executable( 020-MultiFile
   020-TestCase-1.cpp
   020-TestCase-2.cpp
 )
+target_include_directories(020-MultiFile PRIVATE ${CATCH2_INCLUDE_DIRS})
 
 #add_executable(231-Cfg_OutputStreams
 #    231-Cfg-OutputStreams.cpp
@@ -38,4 +39,5 @@ set( TARGETS_IDIOMATIC_EXAMPLES ${BASENAMES_IDIOMATIC_EXAMPLES} )
 
 foreach( name ${TARGETS_IDIOMATIC_EXAMPLES} )
     add_executable(${name} ${name}.cpp 000-CatchMain.cpp)
+    target_include_directories(${name} PRIVATE ${CATCH2_INCLUDE_DIRS})
 endforeach()

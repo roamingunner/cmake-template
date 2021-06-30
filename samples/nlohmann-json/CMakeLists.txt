@@ -1,5 +1,7 @@
+
+find_package(nlohmann_json CONFIG REQUIRED)
 add_executable(nlohmann_json_sample nlohmann_json_sample.cpp)
-target_include_directories(nlohmann_json_sample PRIVATE ${PROJECT_SOURCE_DIR}/utils/cpp/nlohmann)
+target_link_libraries(nlohmann_json_sample PRIVATE nlohmann_json nlohmann_json::nlohmann_json)
 
 
 

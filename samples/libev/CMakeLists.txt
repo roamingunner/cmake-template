@@ -1,3 +1,5 @@
+
+link_directories(${VCPKG_HOME}/installed/${VCPKG_TARGET_TRIPLET}/lib)
 add_executable(libev_echo_server libev_echo_server.cpp)
 target_link_libraries(libev_echo_server -lev)
 add_executable(libev_official_example libev_official_example.c)
