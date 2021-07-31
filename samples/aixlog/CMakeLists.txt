@@ -1,2 +1,5 @@
 add_executable(aixlog_example aixlog_example.cpp)
-target_include_directories(aixlog_example PRIVATE ${PROJECT_SOURCE_DIR}/utils/cpp/aixlog)
+
+find_path(AIXLOG_INCLUDE_DIRS "aixlog.hpp")
+target_include_directories(aixlog_example PRIVATE ${AIXLOG_INCLUDE_DIRS})
+

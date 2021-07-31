@@ -1,19 +1,19 @@
+# find_package(Boost REQUIRED asio)
+find_path(AIXLOG_INCLUDE_DIRS "aixlog.hpp")
+include_directories(aixlog_example PRIVATE ${AIXLOG_INCLUDE_DIRS})
+
 add_executable(tcp_async_server tcp_async_server.cpp)
-target_include_directories(tcp_async_server PRIVATE ${PROJECT_SOURCE_DIR}/utils/cpp/aixlog)
 ADD_DEPENDENCIES(tcp_async_server autorevision)
-target_link_libraries(tcp_async_server pthread)
+target_link_libraries(tcp_async_server PRIVATE pthread)
 
 add_executable(tcp_async_multi_thread_server tcp_async_multi_thread_server.cpp)
-target_include_directories(tcp_async_multi_thread_server PRIVATE ${PROJECT_SOURCE_DIR}/utils/cpp/aixlog)
 ADD_DEPENDENCIES(tcp_async_multi_thread_server autorevision)
-target_link_libraries(tcp_async_multi_thread_server pthread)
+target_link_libraries(tcp_async_multi_thread_server PRIVATE pthread)
 
 add_executable(tcp_sync_client tcp_sync_client.cpp)
-target_include_directories(tcp_sync_client PRIVATE ${PROJECT_SOURCE_DIR}/utils/cpp/aixlog)
 ADD_DEPENDENCIES(tcp_sync_client autorevision)
-target_link_libraries(tcp_sync_client pthread)
+target_link_libraries(tcp_sync_client PRIVATE pthread)
 
 add_executable(tcp_sync_multi_client tcp_sync_multi_client.cpp)
-target_include_directories(tcp_sync_multi_client PRIVATE ${PROJECT_SOURCE_DIR}/utils/cpp/aixlog)
 ADD_DEPENDENCIES(tcp_sync_multi_client autorevision)
-target_link_libraries(tcp_sync_multi_client pthread)
+target_link_libraries(tcp_sync_multi_client PRIVATE pthread)

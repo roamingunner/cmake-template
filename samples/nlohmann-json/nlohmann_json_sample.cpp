@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 
 // for convenience
 using json = nlohmann::json;
@@ -19,7 +19,7 @@ using json = nlohmann::json;
 	"currency": "USD",
 	"value": 42.99
 }
-}  
+}
 */
 
 int main(int argc, char const *argv[])
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[])
 		"currency": "USD",
 		"value": 42.99
 	}
-	} 
+	}
 	)"_json;
 
 	auto j4 = json::parse("{\"answer\":{\"everything\":42},\"happy\":true,\"list\":[1,0,2],\"name\":\"Niels\",\"nothing\":null,\"object\":{\"currency\":\"USD\",\"value\":42.99},\"pi\":3.141}");

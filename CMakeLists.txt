@@ -2,6 +2,21 @@ cmake_minimum_required(VERSION 3.10.0)
 #详细样例参考 https://github.com/kigster/cmake-project-template  https://github.com/district10/cmake-templates/tree/master/modules 工程
 #头文件引用方法参考 https://zhuanlan.zhihu.com/p/82244559
 
+######### import vcpkg 
+# Vcpkg helps you manage C and C++ libraries on Windows, Linux and MacOS. This tool and ecosystem are constantly evolving, and we always appreciate contributions!
+# website https://github.com/microsoft/vcpkg
+# IMPORTANT: change this to where your vcpkg exists.
+# IMPORTANT: vcpkg settings must before PROJECT function 
+
+set(VCPKG_HOME "/home/ubuntu/work/vcpkg") 
+if(NOT "${VCPKG_HOME}" STREQUAL "")
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG_HOME}/scripts/buildsystems/vcpkg.cmake")
+set(VCPKG_TARGET_TRIPLET "arm-linaro")
+set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${VCPKG_HOME}/scripts/toolchains/arm-linaro-toolchain.cmake")
+message(STATUS VCPKG_CHAINLOAD_TOOLCHAIN_FILE=${VCPKG_CHAINLOAD_TOOLCHAIN_FILE})
+endif()
+
+# project start 
 project(c-cpp-project-template)
 
 # Set the searching location for cmake 'include' locations
@@ -16,36 +31,14 @@ include(Findcppcheck)
 include(CppcheckTargets)
 
 ######### set cross compile toolchains
-#include(cmake-module/toolchains/toolchain_sample.cmake)
+# if you import vcpkg ,skip this 
+# include(cmake-module/toolchains/toolchain_sample.cmake)
+
+
 
 ######### set cflags/cxxflags
 set(CMAKE_C_FLAGS "-O2")
 set(CMAKE_CXX_FLAGS "-O2")
-
-######### import external projects
-include(ExternalProject)
-set_property(DIRECTORY PROPERTY EP_PREFIX ${PROJECT_SOURCE_DIR}/depends)
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/depends/lib/cmake;${CMAKE_MODULE_PATH}")
-set(CMAKE_PREFIX_PATH "${PROJECT_SOURCE_DIR}/depends/lib/cmake")
-set(CMAKE_PROGRAM_PATH "${PROJECT_SOURCE_DIR}/depends/host/bin")
-
-link_directories(${PROJECT_SOURCE_DIR}/depends/lib)
-include_directories(${PROJECT_SOURCE_DIR}/depends/include)
-include(cmake-module/import-project/host-abseil.cmake)
-include(cmake-module/import-project/host-cares.cmake)
-include(cmake-module/import-project/host-re2.cmake)
-include(cmake-module/import-project/host-zlib.cmake)
-include(cmake-module/import-project/host-protobuf.cmake)
-include(cmake-module/import-project/host-grpc.cmake)
-include(cmake-module/import-project/abseil.cmake)
-include(cmake-module/import-project/cares.cmake)
-include(cmake-module/import-project/re2.cmake)
-include(cmake-module/import-project/zlib.cmake)
-include(cmake-module/import-project/protobuf.cmake)
-#include(cmake-module/import-project/openssl.cmake)
-include(cmake-module/import-project/grpc.cmake)
-
-###############################################
 
 # Require C++11
 cxx_11()
@@ -60,23 +53,22 @@ add_custom_target(autorevision
 )
 include_directories(${PROJECT_SOURCE_DIR})
 
-#add_subdirectory(samples/cmake)
-#add_subdirectory(samples/aixlog)
-#add_subdirectory(samples/sanitizer)
-#add_subdirectory(samples/client)
-#add_subdirectory(samples/daemon)
-#add_subdirectory(samples/network)
-#add_subdirectory(samples/libev)
-#add_subdirectory(samples/nlohmann-json)
-#add_subdirectory(samples/jsoncpp)
-#add_subdirectory(samples/check_cpp_version)
-#add_subdirectory(samples/coverage)
-#add_subdirectory(samples/cppcheck)
-#add_subdirectory(samples/filesystem)
-#find_package(Boost)
-#if(Boost_FOUND)
-#add_subdirectory(samples/boost.asio)
-#add_subdirectory(samples/boost.thread)
-#endif(Boost_FOUND)
-#add_subdirectory(samples/catch2)
-add_subdirectory(samples/grpc-sample)
+if(NOT "${VCPKG_HOME}" STREQUAL "")
+include_directories("${VCPKG_HOME}/installed/${VCPKG_TARGET_TRIPLET}/include")
+endif()
+
+add_subdirectory(samples/cmake)
+add_subdirectory(samples/cppcheck)
+add_subdirectory(samples/coverage)
+add_subdirectory(samples/sanitizer)
+add_subdirectory(samples/check_cpp_version)
+add_subdirectory(samples/daemon)
+add_subdirectory(samples/client)
+add_subdirectory(samples/network)
+add_subdirectory(samples/aixlog)
+add_subdirectory(samples/libev)
+add_subdirectory(samples/nlohmann-json)
+add_subdirectory(samples/jsoncpp)
+add_subdirectory(samples/catch2)
+add_subdirectory(samples/filesystem)
+add_subdirectory(samples/boost.asio)
