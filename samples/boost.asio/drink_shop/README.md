@@ -53,6 +53,10 @@ ready_queue -> 接待员
 
 ```plantuml
 @startuml
+class user_session{
+  + handler()
+}
+
 class receptionist{
   - share_ptr<ready_queue> in
   - share_ptr<product_queue> out
@@ -89,6 +93,39 @@ packer::out o--- ready_queue
 @enduml
 ```
 
+职责链结构
+
+```plantuml
+@startuml
+class a1{
+ - next
+ - handle()
+}
+class a2{
+ - next
+ - handle()
+}
+class A{
+ - next
+ - handle()
+}
+class B{
+ - next
+ - handle()
+}
+class C{
+ - next
+ - handle()
+}
+a1::next -d->A
+a2::next -u->A
+A::next -> B
+B::next -> C
+
+@enduml
+
+```
+
 ```
 #define DRINK_SHOP_PROTO_CMD_VERSION 1
 #define DRINK_SHOP_PROTO_CMD_ORDER   2
@@ -96,7 +133,7 @@ packer::out o--- ready_queue
 struct drink_shop_protocol{
 	uint32_t magic;
 	int command;
-    int result;
+  int result;
 	uint32_t payload_length;
 	char payload[0];
 }
@@ -106,17 +143,16 @@ struct drink_shop_protocol{
 
 对于order命令的请求，payload为奶茶的参数
 {
-    "kind":"xxx",
+    "type":"xxx",
     "size":"big/middle",
-    "sweet": 1-3,
 }
 
 对于order命令的相应，payload设定为
 {
     "order_idx":203，
-    "kind":"xxx",
+    "type":"xxx",
     "size":"big/middle",
-    "sweet": 1-3,
+    "packed":true/false,
     "stamps":[
         "receptionist@hh:mm::ss",
         "maker@hh:mm::ss",
@@ -130,9 +166,8 @@ struct drink_shop_protocol{
 @startuml
 class transation{
     uint32 order_idx
-    string kind
+    string type
     string size
-    int sweet
     list<string> stamps
 }
 @enduml
