@@ -25,8 +25,8 @@ private:
     const char *body_;
 public:
     drink_shop_protocol(const uint32_t command,const int32_t result, const uint32_t body_length, const char *body = nullptr)
-        :command_(command),result_(result),body_length_(body_length),body_(body){}
-    drink_shop_protocol():magic_(0),command_(0),result_(0),body_length_(0),body_(nullptr){}
+        :magic_(DRINK_SHOP_MAGIC),command_(command),result_(result),body_length_(body_length),body_(body){}
+    drink_shop_protocol():magic_(DRINK_SHOP_MAGIC),command_(0),result_(0),body_length_(0),body_(nullptr){}
     ~drink_shop_protocol() {}
     const uint32_t magic(){
         return magic_;
@@ -65,11 +65,10 @@ public:
         if (!buffer)
             return -EINVAL;
         uint32_t *ptr = reinterpret_cast<uint32_t *>(buffer);
-        
-        if (*ptr != DRINK_SHOP_MAGIC)
-            return -EINVAL;
-        
         magic_ = ntohl(*ptr);
+        if (magic_ != DRINK_SHOP_MAGIC){
+            return -EINVAL;
+        }
         ptr++;
         command_ = ntohl(*ptr);
         ptr++;

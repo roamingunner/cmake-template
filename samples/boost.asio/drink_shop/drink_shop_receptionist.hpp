@@ -9,7 +9,7 @@
 #include <boost/asio/socket_base.hpp>
 #include "drink_shop_transaction.hpp"
 #include "drink_shop_handler.hpp"
-
+#include "aixlog.hpp"
 using namespace std;
 using namespace boost::asio;
 
@@ -27,10 +27,15 @@ private:
     void read_header();
     void read_body(char *ptr, const size_t body_length);
 public:
-    session(uint32_t rid, ip::tcp::socket& socket, package_callback h):rid_(rid),socket_(move(socket)),pkg_handle_(move(h)){
+    session(uint32_t rid, ip::tcp::socket sock, package_callback h):rid_(rid),socket_(std::move(sock)),pkg_handle_(h){
+        LOG(DEBUG) << "session " << rid_ << " construct\n";
+    }
+    ~session() {
+        LOG(DEBUG) << "session " << rid_ << " destory\n";
+    }
+    void start(){
         read_header();
     }
-    ~session() {}
     int send_package(char *buffer, size_t length);
 
 };
@@ -45,7 +50,7 @@ private:
     map<uint32_t,shared_ptr<session>> sessions_;
 private:
     void on_pacakge(uint32_t rid, int32_t result, char *buffer, size_t length);
-    int add_session(ip::tcp::socket& sock);
+    int add_session(ip::tcp::socket sock);
     void del_session(uint32_t rid);
 public:
     drink_shop_receptionist(io_context& ioc, ip::tcp::endpoint& ep)

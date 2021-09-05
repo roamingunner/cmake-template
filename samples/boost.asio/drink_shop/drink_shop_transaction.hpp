@@ -36,6 +36,7 @@ public:
         time_t now = time(0);
         stamp += "@";
         stamp += ctime(&now);
+        stamps_.push_back(stamp);
     }
     const bool is_packed(){
         return packed_;

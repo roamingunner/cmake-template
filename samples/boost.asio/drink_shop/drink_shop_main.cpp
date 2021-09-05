@@ -97,21 +97,25 @@ int main(int argc, char **argv)
     if (conf->deamon()) {
         daemonize();
     }
-
+    
     try
     {
         io_context ioc;
-        ip::tcp::endpoint ep;
+        shared_ptr<ip::tcp::endpoint> ep;
         if (conf->bind_ip().length()){
-            ep.address(ip::address::from_string(conf->bind_ip()));
+            ep = make_shared<ip::tcp::endpoint>(ip::address::from_string(conf->bind_ip()),conf->port());
+        }else{
+            ep = make_shared<ip::tcp::endpoint>(ip::tcp::v4(),conf->port());
         }
-        ep.port(conf->port());
+
+        shared_ptr<drink_shop_receptionist> receptionist = make_shared<drink_shop_receptionist>(ioc,*ep);
         shared_ptr<drink_shop_maker> marker = make_shared<drink_shop_maker>();
         shared_ptr<drink_shop_packer> packer = make_shared<drink_shop_packer>();
-        shared_ptr<drink_shop_receptionist> receptionist = make_shared<drink_shop_receptionist>(ioc,ep);
         shared_ptr<null_handler> end = make_shared<null_handler>();
         marker->set_next(packer.get())->set_next(receptionist.get())->set_next(end.get());
         receptionist->set_entry_handle(marker.get());
+        LOG(NOTICE) << "start drink shop open\n";
+        receptionist->do_accept();
         ioc.run();
     }
     catch(const std::exception& e)

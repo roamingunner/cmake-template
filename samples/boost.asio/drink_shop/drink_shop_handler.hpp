@@ -2,6 +2,7 @@
 #define _DRINK_SHOP_HANDLER_H_
 #include <string>
 #include "drink_shop_transaction.hpp"
+#include "aixlog.hpp"
 using namespace std;
 
 enum handler_id{
@@ -21,6 +22,7 @@ class handler {
     handler(){};
     virtual ~handler(){}
     virtual handler *set_next(handler *handler) = 0;
+    virtual handler *next() = 0;
     virtual void handle(transacation* t) = 0;
 };
 /**
@@ -44,6 +46,9 @@ class abstract_handler : public handler {
         // $monkey->setNext($squirrel)->setNext($dog);
         return h;
     }
+    handler *next() override {
+        return this->next_handler_;
+    }
     enum handler_id id() const{
         return id_;
     }
@@ -54,13 +59,13 @@ class abstract_handler : public handler {
         return ;
     }
     void handle(const enum handler_id hid, transacation* t){
-        handler *h = this->next_handler_;
-        while(h){
-            abstract_handler *ah = reinterpret_cast<abstract_handler *>(h);
+        abstract_handler *ah = reinterpret_cast<abstract_handler *>(this->next_handler_);
+        while(ah){
+            LOG(DEBUG) << "handler id:" << ah->id() << endl;
             if (ah->id() == hid){
                 return ah->handle(t);
             }else{
-                h = this->next_handler_;
+                ah = reinterpret_cast<abstract_handler *>(ah->next());
             }
         }
     }
@@ -75,6 +80,7 @@ public:
     null_handler(/* args */):abstract_handler(NULL_HANDLER_ID) {}
     ~null_handler() {}
     void handle(transacation* t) override {
+        LOG(DEBUG) << "null_handler handle\n"; 
         delete t;
         return;
     }

@@ -3,7 +3,7 @@
 #include "drink_shop_config.hpp"
 
 const char *argp_program_version =
-  "drink_shop 1.0";
+  "1.0";
 const char *argp_program_bug_address =
   "<103922926@qq.com>";
 
@@ -105,7 +105,7 @@ void configuration::set_log_sink(const string& log_sink){
     log_sink_ = log_sink;
 }
 const bool configuration::deamon() const{
-    return port_;
+    return deamon_;
 }
 void configuration::set_deamon(const bool deamon){
     deamon_ = deamon;
