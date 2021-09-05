@@ -11,7 +11,7 @@ using namespace boost::asio;
 const char *argp_program_version =
 "1.0";
 const char *argp_program_bug_address =
-"<103922926@qq.com>";
+"<xxxxxx@xxx.com>";
 
 /* Program documentation. */
 static char doc[] =
