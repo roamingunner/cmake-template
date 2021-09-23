@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10.0)
 #详细样例参考 https://github.com/kigster/cmake-project-template  https://github.com/district10/cmake-templates/tree/master/modules 工程
 #头文件引用方法参考 https://zhuanlan.zhihu.com/p/82244559
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
+
 ######### import vcpkg 
 # Vcpkg helps you manage C and C++ libraries on Windows, Linux and MacOS. This tool and ecosystem are constantly evolving, and we always appreciate contributions!
 # website https://github.com/microsoft/vcpkg
@@ -14,13 +16,17 @@ set(CMAKE_TOOLCHAIN_FILE "${VCPKG_HOME}/scripts/buildsystems/vcpkg.cmake")
 set(VCPKG_TARGET_TRIPLET "arm-linaro")
 set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${VCPKG_HOME}/scripts/toolchains/arm-linaro-toolchain.cmake")
 message(STATUS VCPKG_CHAINLOAD_TOOLCHAIN_FILE=${VCPKG_CHAINLOAD_TOOLCHAIN_FILE})
+else()
+set(VCPKG_TARGET_TRIPLET "x64-linux")
+set(VCPKG_INSTALLED_DIR "vcpkg_install_dir")
+include(import_pkg_from_vcpkg)
+message(STATUS "finding package from ${CMAKE_PREFIX_PATH}")
 endif()
 
 # project start 
-project(c-cpp-project-template)
+project(cmake-template)
 
 # Set the searching location for cmake 'include' locations
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
 include(c++-standards)
 include(code-coverage)
 include(formatting)
@@ -55,6 +61,8 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 if(NOT "${VCPKG_HOME}" STREQUAL "")
 include_directories("${VCPKG_HOME}/installed/${VCPKG_TARGET_TRIPLET}/include")
+else()
+include_directories("${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include")
 endif()
 
 add_subdirectory(samples/cmake)
