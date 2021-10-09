@@ -1,1 +1,2 @@
 add_executable(check_cpp_version check_cpp_version.cpp)
+add_executable(lvalue_rvalue lvalue_rvalue.cpp)
