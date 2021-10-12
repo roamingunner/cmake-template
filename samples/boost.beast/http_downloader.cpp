@@ -12,6 +12,8 @@ void http_downloader::go() {
 
     if (url_.path_.empty()){
         url_.path_ = "/";
+    }else{
+        url_.path_.insert(0,"/");
     }
 
     if (url_.port_.empty()) {
@@ -48,15 +50,15 @@ void http_downloader::connect_to_remote(tcp::resolver::results_type &results) {
 void http_downloader::send_request() {
     cout << "Downloading ...\n";
     // Send HTTP(S) request using beast
-    http::request<http::empty_body> req;
-    req.version(11);
-    req.method(http::verb::get);
-    req.target(url_.path_);
-    req.set(http::field::host, url_.host_);
-    req.set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+    auto req = make_shared<http::request<http::empty_body>>();
+    req->version(11);
+    req->method(http::verb::get);
+    req->target(url_.path_);
+    req->set(http::field::host, url_.host_);
+    req->set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     cout << "send request ...\n";
-    http::async_write(stream_, req,
-                      [this](const beast::error_code &ec, std::size_t) {
+    http::async_write(stream_, *req,
+                      [this,req](const beast::error_code &ec, std::size_t) {
                         cout << "send request cb...\n";
 
                           if (ec) {
@@ -76,6 +78,7 @@ void http_downloader::recive_header() {
         stream_, buffer_, *rsp_hdr_parser,
         [this, rsp_hdr_parser](const beast::error_code &ec, std::size_t bytes_transferred) {
             boost::ignore_unused(bytes_transferred);
+            cout << "recive header callback ...\n";
             if (ec) {
                 fail(ec, "recive header fail");
             } else if (rsp_hdr_parser->get().result() == http::status::ok) {
@@ -97,6 +100,8 @@ void http_downloader::recive_header() {
                 } else {
                     recive_body(rsp_parser);
                 }
+            }else {
+                cout << "HTTP GET failed:" << rsp_hdr_parser->get().reason() << endl;
             }
         });
 }
