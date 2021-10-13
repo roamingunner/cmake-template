@@ -4,31 +4,44 @@
 #include <memory>
 #include <stdlib.h>
 
-void http_downloader::go() {
-    if (!url_.isValid()) {
+
+void http_downloader::async_go(const string& url, const string& outfile, http_download_callback cb) {
+    LUrlParser::ParseURL url_parse = LUrlParser::ParseURL::parseURL(url);
+
+    if (!url_parse.isValid()) {
         cerr << "url is invalid!\n";
         return ;
     }
 
-    if (url_.path_.empty()){
-        url_.path_ = "/";
+    //url_parse miss "/" header
+    if (url_parse.path_.empty()){
+        url_parse.path_ = "/";
     }else{
-        url_.path_.insert(0,"/");
+        url_parse.path_.insert(0,"/");
     }
 
-    if (url_.port_.empty()) {
-        if (!url_.scheme_.compare("https")) {
-            url_.port_ = "433";
-        } else if (!url_.scheme_.compare("http")) {
-            url_.port_ = "80";
+    if (url_parse.port_.empty()) {
+        if (!url_parse.scheme_.compare("https")) {
+            url_parse.port_ = "433";
+        } else if (!url_parse.scheme_.compare("http")) {
+            url_parse.port_ = "80";
         }
     }
 
+    outfile_ = outfile;
+    dl_url_ = url;
+    dl_host_ = url_parse.host_;
+    dl_target_ = url_parse.path_;
+    cb_ = cb;
+
     resolver_.async_resolve(
-        url_.host_, url_.port_,
+        url_parse.host_, url_parse.port_,
         [this](const boost::system::error_code &ec, tcp::resolver::results_type results) {
             if (ec) {
                 fail(ec, "resolve failed");
+                if (cb_){
+                    cb_(ec,dl_url_);
+                }
             } else {
                 connect_to_remote(results);
             }
@@ -41,6 +54,9 @@ void http_downloader::connect_to_remote(tcp::resolver::results_type &results) {
     [this](const boost::system::error_code &ec, tcp::resolver::results_type::endpoint_type) {
         if (ec) {
             fail(ec, "connect to remote failed");
+            if (cb_){
+                cb_(ec,dl_url_);
+            }
         } else {
             send_request();
         }
@@ -53,19 +69,21 @@ void http_downloader::send_request() {
     auto req = make_shared<http::request<http::empty_body>>();
     req->version(11);
     req->method(http::verb::get);
-    req->target(url_.path_);
-    req->set(http::field::host, url_.host_);
+    req->target(dl_target_);
+    req->set(http::field::host, dl_host_);
     req->set(http::field::user_agent, BOOST_BEAST_VERSION_STRING);
     cout << "send request ...\n";
     http::async_write(stream_, *req,
                       [this,req](const beast::error_code &ec, std::size_t) {
                         cout << "send request cb...\n";
-
-                          if (ec) {
-                              fail(ec, "send request fail");
-                          } else {
-                              recive_header();
-                          }
+                        if (ec) {
+                            fail(ec, "send request fail");
+                            if (cb_){
+                                cb_(ec,dl_url_);
+                            }
+                        } else {
+                            recive_header();
+                        }
                       });
 }
 
@@ -81,22 +99,24 @@ void http_downloader::recive_header() {
             cout << "recive header callback ...\n";
             if (ec) {
                 fail(ec, "recive header fail");
-            } else if (rsp_hdr_parser->get().result() == http::status::ok) {
-                if (config_.dump_header) {
-                    // dump header
+                if (cb_){
+                    cb_(ec,dl_url_);
                 }
-
+            } else if (rsp_hdr_parser->get().result() == http::status::ok) {
                 beast::error_code e;
-                if (config_.output_path.empty()) {
-                    config_.output_path = "downloadfile-";
-                    config_.output_path += time(0);
+                if (outfile_.empty()) {
+                    outfile_ = "downloadfile-";
+                    outfile_ += time(0);
                 }
                 shared_ptr<http::response_parser<http::file_body>> rsp_parser = make_shared<http::response_parser<http::file_body>>(std::move(*rsp_hdr_parser));
                 std::shared_ptr<http::response<http::file_body>> prsp = make_shared<http::response<http::file_body>>();
                 //*prsp_hdr
-                rsp_parser->get().body().open(config_.output_path.c_str(), beast::file_mode::write_new, e);
+                rsp_parser->get().body().open(outfile_.c_str(), beast::file_mode::write_new, e);
                 if (e) {
                     fail(e, "create new file");
+                    if (cb_){
+                        cb_(ec,dl_url_);
+                    }
                 } else {
                     recive_body(rsp_parser);
                 }
@@ -112,13 +132,24 @@ void http_downloader::recive_body(std::shared_ptr<http::response_parser<Body, Al
     http::async_read(stream_, buffer_, *rsp_praser, [this, rsp_praser](const beast::error_code &ec, std::size_t bytes) {
         if (ec) {
             fail(ec, "recive body");
-        } else {
-            cout << "complete!\n";
+        }
+        if (cb_){
+            cb_(ec,dl_url_);
         }
     });
 }
 
 //################### test code
+
+
+
+struct hd_config{
+    string url;
+    string output_path;
+    bool dump_header;
+};
+
+
 
 const char *argp_program_version = "http_downloader 1.0";
 const char *argp_program_bug_address = "leo.qin <103922926@qq.com>";
@@ -189,6 +220,14 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 /* Our argp parser. */
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
+void dl_callback(const boost::system::error_code ec, const string& url){
+    if (ec){
+        cout << "download " << url << " failed:" << ec.message() << endl;
+    }else{
+        cout << "download " << url << " finished\n";
+    }
+}
+
 int main(int argc, char **argv) {
     /* code */
     struct hd_config conf;
@@ -196,8 +235,10 @@ int main(int argc, char **argv) {
     argp_parse (&argp, argc, argv, 0, 0, &conf);
 
     net::io_context ioc;
-    http_downloader dl(ioc,conf);
-    dl.go();
+    http_downloader dl(ioc);
+    
+    dl.async_go(conf.url,conf.output_path,dl_callback);
+
     ioc.run();
     
     return 0;
