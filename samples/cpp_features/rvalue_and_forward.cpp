@@ -66,30 +66,14 @@ void forward(string& str){
 }
 
 
-void perfect_forward(string&& str){
-    cout << "perfect_forward string&& =>" ;
-    process(forward<string>(str));
-}
-
-void perfect_forward(string& str){
-    cout << "perfect_forward string& =>" ;
-    process(forward<string>(str));
-}
-
 
 template<typename T> 
-void perfect_forward_template(T&& t){
-    cout << "perfect_forward_template =>" ;
+void perfect_forward(T&& t){
+    cout << "perfect_forward =>" ;
     process(forward<T>(t));
 }
 
 
-
-template<> 
-void perfect_forward_template<string>(string&& t){
-    cout << "perfect_forward_template<string>&& =>" ;
-    process(forward<string>(t));
-}
 
 
 void test_forward(void){
@@ -99,8 +83,6 @@ void test_forward(void){
     forward(str);
     perfect_forward(string("str..."));
     perfect_forward(str);
-    perfect_forward_template(string("str..."));
-    perfect_forward_template(str);
 
 }
 
@@ -138,5 +120,14 @@ perfect_forward string& =>process got rvalue reference
 
 
 ## move仅仅把一个左值无条件转化为右值，至于是否是移动，是有类的移动构造或者移动赋值实现的
+
+## 完美转发是在模板函数中使用的。一般情况下&接受左值，&&接受右值，但是在模板函数中&&既可以接受左值又可以接受右值。
+这时模板参数的&&是作为万能引用。当接受左值时，& && 会折叠成&；当接受右值时，&& &&会折叠成&&。
+
+template<typename T> 
+void perfect_forward(T&& t){
+    cout << "perfect_forward =>" ;
+    process(forward<T>(t));
+}
 
 */
