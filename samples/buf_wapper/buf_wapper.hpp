@@ -14,7 +14,7 @@ private:
 public:
     buf_wapper():d(nullptr),s(0){}
     buf_wapper(T* data, size_t size):d(static_cast<void *>(data)),s(size){}
-    buf_wapper(size_t size) : s(sizeof(T) * size){
+    buf_wapper(size_t num) : s(sizeof(T) * num){
         d = malloc(s);
         if (!d){
             throw std::runtime_error("malloc failed");
