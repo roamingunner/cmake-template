@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <algorithm>
 
 using namespace std;
 
@@ -71,21 +72,18 @@ public:
     void del_subject(const string sn){
         subjects_.erase(sn);
     }
-    bool iterator_is_end(subject_iterator& it){
-        return (it == subjects_.end());
-    }
-    bool iterator_is_end(const_subject_iterator& it){
-        return (it == subjects_.end());
+    subject_iterator sbj_end(){
+        return subjects_.end();
     }
     const_subject_iterator sbj(const string sn){
         return subjects_.find(sn);
     }
-    subject_iterator concreate_iterator(){
+    subject_iterator sbj_begin(){
         return subjects_.begin();
     }
     const shared_ptr<subject>& operator[](const string sn){
         const_subject_iterator it = sbj(sn);
-        if (iterator_is_end(it)){
+        if (it == sbj_end()){
             throw out_of_range("key not found");
         }
         return it->second;
@@ -125,22 +123,18 @@ public:
     void del_student(const int idx){
         students_.erase(idx);
     }
-
-    bool iterator_is_end(student_iterator& it){
-        return (it == students_.end());
-    }
-    bool iterator_is_end(const_student_iterator& it){
-        return (it == students_.end());
-    }
     const_student_iterator stu(const int idx){
         return students_.find(idx);
     }
-    student_iterator concreate_iterator(){
+    student_iterator stu_begin(){
         return students_.begin();
+    }
+    student_iterator stu_end(){
+        return students_.end();
     }
     const shared_ptr<student>& operator[](const int idx){
         const_student_iterator it = stu(idx);
-        if (iterator_is_end(it)){
+        if (it == stu_end()){
             throw out_of_range("key not found");
         }
         return it->second;
@@ -186,13 +180,27 @@ int main(int argc, char const *argv[])
         c[1]->operator[]("History")->append_score(85);
         c[1]->operator[]("History")->append_score(87);
 
-        for (classroom::student_iterator stu_it = c.concreate_iterator(); !c.iterator_is_end(stu_it); stu_it++){
-            for (student::subject_iterator sj_it = stu_it->second->concreate_iterator();
-                !stu_it->second->iterator_is_end(sj_it); sj_it++){
+        for (classroom::student_iterator stu_it = c.stu_begin(); stu_it != c.stu_end(); stu_it++){
+            for (student::subject_iterator sbj_it = stu_it->second->sbj_begin();
+                sbj_it != stu_it->second->sbj_end(); sbj_it++){
                 cout << "idx:" << stu_it->first << " name:" << stu_it->second->name() 
-                    << " subject:" << sj_it->first << " avg_score:" << sj_it->second->avg_score() << endl;
+                    << " subject:" << sbj_it->first << " avg_score:" << sbj_it->second->avg_score() << endl;
             }
         }
+
+        //use STL algorithm
+        const string name("Lucy");
+        auto l = [&name](const classroom::student_iterator::value_type& pair) -> bool{
+            return !pair.second->name().compare(name);
+        };
+        classroom::student_iterator sit = find_if(c.stu_begin(),c.stu_end(),l);
+        cout << "show scores of "<< name << ":\n";
+        for (student::subject_iterator sbj_it = sit->second->sbj_begin();
+            sbj_it != sit->second->sbj_end(); sbj_it++){
+            cout << "idx:" << sit->first << " name:" << sit->second->name() 
+                << " subject:" << sbj_it->first << " avg_score:" << sbj_it->second->avg_score() << endl;
+        }
+        
     }
     catch(const std::exception& e)
     {
