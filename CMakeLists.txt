@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-module;")
 # IMPORTANT: change this to where your vcpkg exists.
 # IMPORTANT: vcpkg settings must before PROJECT function 
 
-set(VCPKG_HOME "/home/leo/work/vcpkg") 
+#set(VCPKG_HOME "/home/leo/work/vcpkg") 
 if(NOT "${VCPKG_HOME}" STREQUAL "")
 set(CMAKE_TOOLCHAIN_FILE "${VCPKG_HOME}/scripts/buildsystems/vcpkg.cmake")
 # set(VCPKG_TARGET_TRIPLET "arm-linaro")
@@ -81,4 +81,5 @@ endif()
 #add_subdirectory(samples/filesystem)
 #add_subdirectory(samples/boost.asio)
 #add_subdirectory(samples/boost.json)
-add_subdirectory(samples/boost.beast)
+#add_subdirectory(samples/boost.beast)
+add_subdirectory(samples/errmsg)
