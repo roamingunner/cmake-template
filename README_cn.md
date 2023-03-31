@@ -99,7 +99,31 @@ set(CMAKE_C_COMPILER ${tools}/bin/arm-linux-gnueabihf-gcc)
 set(CMAKE_CXX_COMPILER ${tools}/bin/arm-linux-gnueabihf-g++)
 ```
 
-## 代码开发样例
+## 代码开发样整理计划
 
-参考samples目录
-
+* log方案
+  * c++: aixlog
+  * c: ??
+* client程序
+  * c++: cli11/...
+  * c: argp(非posix方案,uclibc不支持)/getopt
+* daemonize，原理参考unix系统编程
+  * c++
+  * c
+* 文件系统
+  * c++: boost.filesystem
+  * c: ???
+* 事件驱动
+  * c++: boost.asio
+  * c: libev,epoll/poll
+事件驱动
+协程
+socket
+序列化与反序列化
+设计模式
+tar解析
+API设计
+- api
+工具
+- hexdump
+- xerror
