@@ -1,0 +1,37 @@
+syntax = "proto2";
+import 'nanopb.proto';
+
+message version_req_msg
+{
+}
+
+message version_rsq_msg
+{
+    required string value = 1;
+}
+
+message ping_req_msg
+{
+    required int32 pre = 1;
+    required string str = 2;
+}
+
+message ping_rsp_msg
+{
+    required string str = 1;
+    required int32 post = 2;
+
+}
+
+/* Oneof in a message with other fields */
+message cmd_msg
+{
+    required int32 magic = 1 [ default= 0x12345678 ];
+    oneof type
+    {
+        version_req_msg version_req = 10;
+        version_rsq_msg version_rsp = 11;
+        ping_req_msg ping_req = 12;
+        ping_rsp_msg ping_rsp = 13;
+    }
+}
